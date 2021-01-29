@@ -204,4 +204,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Ignoring folders
+**/data
+
 # End of https://www.toptal.com/developers/gitignore/api/windows,pycharm,git,venv,macos,linux
