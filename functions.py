@@ -162,12 +162,21 @@ def gaussian_kernel(y, yi, h_t):
     return kernel
 
 # Function d_dh ft_yi based on recursive formula - EQ 5
-def d_dh_ft(d_dh_ft_memory, y, yi, lambda_value, current_kde, ht):
-    value = lambda_value * d_dh_ft_memory + (1-lambda_value) * current_kde * 1/ht * (((y-yi)**2/ht**2)-1)
-    return value
+def d_dh_ft(d_dh_ft_memory, y, yi, lambda_value, current_kde, ht, index):
+    value = lambda_value * d_dh_ft_memory + (1-lambda_value) * current_kde * 1/ht * (((y-yi)/ht)**2-1)
+    if value[index] >= 0 :
+        return value
+    else:
+        value[index] = 0
+        return  value
+
 
 # Function     - EQ 6
 def d2_dh2_St(d2_dh2_St_memory, ut, lambda_value):
     value = lambda_value * d2_dh2_St_memory + (1-lambda_value) * ut**2
     return value
+
+def ht_est_value(current_kde, ht_est):
+    index = np.where(current_kde == np.max(current_kde))
+    return index, float(ht_est[index])
 
