@@ -136,9 +136,19 @@ def log_score_yi(yi, y, ft_y):
 
 #################### Equations for RML parameter estimation
 # Function to calculate h_t parameter based on Recursive Maximum Likelihood - EQ 1
-def ht_est_RML(ht_est_memory, ddh_St, ddh2_St):
-    h_t_est = ht_est_memory - ddh_St/ ddh2_St
-    return h_t_est
+def ht_est_RML(ht_est_memory, ddh_St, ddh2_St, it_counter, current_kde):
+    if it_counter <= 30:
+        return ht_est_memory
+    else:
+        index = np.where(current_kde == np.max(current_kde))
+        ht_est = np.log(ht_est_memory) - ddh_St[index] / ddh2_St[index]
+        ht_est = float(ht_est)
+        ht_value = np.exp(ht_est)
+        return ht_value
+
+def ht_est_value(current_kde, ht_est):
+    index = np.where(current_kde == np.max(current_kde))
+    return index, float(ht_est[index])
 
 # Function to calculate the first derivative of St(h_est) - EQ 2
 def d_dh_St(Ut, lambda_value):
@@ -163,20 +173,12 @@ def gaussian_kernel(y, yi, h_t):
 
 # Function d_dh ft_yi based on recursive formula - EQ 5
 def d_dh_ft(d_dh_ft_memory, y, yi, lambda_value, current_kde, ht, index):
-    value = lambda_value * d_dh_ft_memory + (1-lambda_value) * current_kde * 1/ht * (((y-yi)/ht)**2-1)
-    if value[index] >= 0 :
-        return value
-    else:
-        value[index] = 0
-        return  value
-
+    value = lambda_value * d_dh_ft_memory + (1-lambda_value) * current_kde * (1/ht) * ((y-yi)**2/(ht**2)-1)
+    return value
 
 # Function     - EQ 6
 def d2_dh2_St(d2_dh2_St_memory, ut, lambda_value):
     value = lambda_value * d2_dh2_St_memory + (1-lambda_value) * ut**2
     return value
 
-def ht_est_value(current_kde, ht_est):
-    index = np.where(current_kde == np.max(current_kde))
-    return index, float(ht_est[index])
 
