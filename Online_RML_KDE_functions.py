@@ -36,14 +36,13 @@ def online_KDE(yv, ll):
     hf = np.repeat(1/(np.max(yv) - np.min(yv)), len(yy))  # initial value of the hessian, uniform distribution
     hv = [] # empty list to store values of hh
     hy_hat = []
-    tol = 0.05
+    tol = 0.05 # tolerance to safe-check that the gradient does not go to 0
+    log_score_lst = []
     # iterative calculation
     for i in range(len(yv)):
         # first update parameters
         uf = dfy/fy # calculation of the information vector
-        if np.interp(yv[i], yy, fy) < tol:
-            # TODO replace values
-            # fy = np.where(fy < tol, tol, fy)
+        if np.interp(yv[i], yy, fy) < tol: # safety check to avoid problem in the tails grad towards 0
             uf = dfy / tol
         gf = -(1-ll) * uf # calculation of gradient S
         gfy = np.interp(yv[i], yy, gf) # getting the value at yi
@@ -52,6 +51,8 @@ def online_KDE(yv, ll):
         if i > 50:
             # update hh
             hh = hh - gfy/hfy
+            # compute log-likelihood score before updating the fy formula
+            log_score_lst.append(log_score_yi(yv, yy, fy, i))
             print(hh)
         else:
             pass
@@ -66,5 +67,14 @@ def online_KDE(yv, ll):
         uf = dfy/fy # update information vector
         hf = ll * hf + (1-ll) * uf**2 # update hessian function
         a = 3
-    return yy, fy, hf, dfy, uf, hv
+    return yy, fy, hf, dfy, uf, hv, log_score_lst
 
+# log-likelihood score calculation at time t yi.
+def log_score_yi(yv, yy, fy, i):
+    if i == 0:
+        pass
+    else:
+       return - np.log(np.interp(yv[i], yy, fy))
+
+def smaller_df(df, until_month):
+    return df[df.index.month <= until_month]
