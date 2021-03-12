@@ -20,7 +20,6 @@ df = series.to_frame()  # Convert series into df
 
 if __name__ == "__main__":
     print("test starts here")
-    # read input data - Flexibility Data level 1
     yy, fy, hf, dfy, uf, h_val, log_score_lst = online_KDE(np.array(df['flex_load_kWh']), 0.999)
     log_score = np.mean(log_score_lst)
     print("test STOP")

@@ -41,6 +41,7 @@ def online_KDE(yv, ll):
     # iterative calculation
     for i in range(len(yv)):
         # first update parameters
+        fy_old = fy  #remember to remove this line. this is just for plotting now
         uf = dfy/fy # calculation of the information vector
         if np.interp(yv[i], yy, fy) < tol: # safety check to avoid problem in the tails grad towards 0
             uf = dfy / tol
@@ -71,10 +72,8 @@ def online_KDE(yv, ll):
 
 # log-likelihood score calculation at time t yi.
 def log_score_yi(yv, yy, fy, i):
-    if i == 0:
-        pass
-    else:
-       return - np.log(np.interp(yv[i], yy, fy))
+    score = - np.log(np.interp(yv[i], yy, fy))
+    return score
 
 def smaller_df(df, until_month):
     return df[df.index.month <= until_month]
