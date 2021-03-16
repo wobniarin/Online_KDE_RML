@@ -46,8 +46,8 @@ def online_KDE(yv, ll):
         if np.interp(yv[i], yy, fy) < tol: # safety check to avoid problem in the tails grad towards 0
             uf = dfy / tol
         gf = -(1-ll) * uf # calculation of gradient S
-        gfy = np.interp(yv[i], yy, gf) # getting the value at yi
-        hfy = np.interp(yv[i], yy, hf) # getting the value of hf at yi
+        gfy = np.interp(yv[i], yy, gf) # getting the value of grad S at yi
+        hfy = np.interp(yv[i], yy, hf) # getting the value of hessian S hf at yi
         # implementing warm-start
         if i > 50:
             # update hh
