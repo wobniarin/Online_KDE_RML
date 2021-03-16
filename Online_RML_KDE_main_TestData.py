@@ -1,3 +1,8 @@
+# Online Recursive Maximum Likelihood - Test Data (normal distributions - shifted)
+# This code uses a funny distribution based on two normal distribution, in order to check the KDE performance
+# Author - Íngrid Munné Collado
+# Date - 2/03/2021
+# Libraries
 from Online_RML_KDE_functions import *
 import numpy as np
 import matplotlib.pyplot as plt
