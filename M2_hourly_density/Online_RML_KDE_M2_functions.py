@@ -48,10 +48,10 @@ def online_KDE(yv, ll, hours_vector):
     fy_dict = {i:np.repeat(1/(np.max(yv) - np.min(yv)), len(yy)) for i in hours_lst} # start with a uniform distribution
     dfy_dict = {i:np.repeat(0/(np.max(yv) - np.min(yv)), len(yy)) for i in hours_lst} # initial value of the derivative, 0
     hf_dict = {i:np.repeat(1/(np.max(yv) - np.min(yv)), len(yy)) for i in hours_lst}  # initial value of the hessian, uniform distribution
-    hv = [[] for i in range(0,23)] # empty list to store values of hh
-    hy_hat = [[] for i in range(0,23)]
+    hv = [[] for i in range(0,24)] # empty list to store values of hh
+    hy_hat = [[] for i in range(0,24)]
     tol = 0.05 # tolerance to safe-check that the gradient does not go to 0
-    log_score_lst = [[] for i in range(0,23)]
+    log_score_lst = [[] for i in range(0,24)]
     # iterative calculation
     for i in range(len(yv)):
         print(i)
@@ -73,7 +73,7 @@ def online_KDE(yv, ll, hours_vector):
             hh = hh - gfy/hfy
             hh_dict.update({hours_vector[i]:hh})
             # compute log-likelihood score before updating the fy formula
-            log_score_lst[int(df.index.strftime("%H")[i])].append(log_score_yi(yv, yy, fy, i))
+            log_score_lst[int(hours_vector[i])].append(log_score_yi(yv, yy, fy, i))
             print(hh)
         else:
             pass
@@ -92,7 +92,7 @@ def online_KDE(yv, ll, hours_vector):
         dfy_dict.update({hours_vector[i]: dfy})
         hf_dict.update({hours_vector[i]: hf})
         a = 3
-    return yy, fy, hf, dfy, uf, hv, log_score_lst
+    return yy, fy_dict, hf_dict, dfy_dict, uf, hv, log_score_lst
 
 # log-likelihood score calculation at time t yi.
 def log_score_yi(yv, yy, fy, i):

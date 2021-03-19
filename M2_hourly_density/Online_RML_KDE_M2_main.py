@@ -31,6 +31,7 @@ if __name__ == "__main__":
     for lambda_value in lambda_grid:
         yy, fy, hf, dfy, uf, h_val, log_score_lst = online_KDE(np.array(df['flex_load_kWh']), lambda_value,
                                                                df.index.strftime("%H"))
-        log_score_values.append(np.mean(log_score_lst))
+        a=3
+        log_score_values = [np.mean(i) for i in log_score_lst ]
         lambda_values.append(lambda_value)
     print("test STOP")
