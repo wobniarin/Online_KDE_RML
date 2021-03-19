@@ -64,7 +64,7 @@ def online_KDE(yv, ll):
         # update functions using recursive formulas
         gaussian = gaussiankernel(yy, yv[i], hy) # remember to remove this line, just for plotting now
         fy = ll * fy + (1 - ll) * gaussiankernel(yy, yv[i], hy) # update density
-        dfy = ll * dfy + (1-ll)*((((yy-yv[i])**2)/(hy**2)) -1)*gaussiankernel(yy, yv[i], hy) # update derivative
+        dfy = ll * dfy + (1-ll)*((((yy-yv[i])**2)/(hy**2)) -1)*1/hy*gaussiankernel(yy, yv[i], hy) # update derivative
         uf = dfy/fy # update information vector
         hf = ll * hf + (1-ll) * uf**2 # update hessian function
         a = 3
