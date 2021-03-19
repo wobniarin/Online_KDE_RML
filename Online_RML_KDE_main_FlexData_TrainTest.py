@@ -22,6 +22,7 @@ df_test = df[len(df_train):] # test split
 lambda_values = []
 log_score_values = []
 # grid search for lambda
+
 # lambda_grid = np.linspace(0.9965, 1, 800)
 lambda_grid = [0.9973147684605758] # optimal value found in training
 
