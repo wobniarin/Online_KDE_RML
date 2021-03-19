@@ -8,16 +8,17 @@ import matplotlib.pyplot as plt
 import pickle
 
 # Define paths
-file_path = './data/level_2_input_data.pkl'
-fig_path = './figures/'
-folder_path = './results/'
+file_path = '../data/level_2_input_data.pkl'
+fig_path = '../figures/'
+folder_path = '../results/'
 # Read input data
 with open(file_path, 'rb') as f:
     series = pickle.load(f)
     f.close()
 df = series.to_frame()  # Convert series into df
-df_train = smaller_df(df, 8) # training split
-df_test = df[len(df_train):] # test split
+# df_train = smaller_df(df, 8) # training split
+df = smaller_df(df,1)
+# df_test = df[len(df_train):] # test split
 # define lists to store the values of lambda and log-score
 lambda_values = []
 log_score_values = []
@@ -28,7 +29,8 @@ lambda_grid = [0.999] # optimal value found in training
 if __name__ == "__main__":
     print("test starts here")
     for lambda_value in lambda_grid:
-        yy, fy, hf, dfy, uf, h_val, log_score_lst = online_KDE(np.array(df_test['flex_load_kWh']), lambda_value)
+        yy, fy, hf, dfy, uf, h_val, log_score_lst = online_KDE(np.array(df['flex_load_kWh']), lambda_value,
+                                                               df.index.strftime("%H"))
         log_score_values.append(np.mean(log_score_lst))
         lambda_values.append(lambda_value)
     print("test STOP")
