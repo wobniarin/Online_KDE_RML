@@ -17,14 +17,14 @@ with open(file_path, 'rb') as f:
     f.close()
 df = series.to_frame()  # Convert series into df
 # df_train = smaller_df(df, 8) # training split
-df = smaller_df(df,1)
+# df = smaller_df(df,6)
 # df_test = df[len(df_train):] # test split
 # define lists to store the values of lambda and log-score
 lambda_values = []
 log_score_values = []
 # grid search for lambda
-# lambda_grid = np.linspace(0.9965, 1, 800)
-lambda_grid = [0.999] # optimal value found in training
+# lambda_grid = np.linspace(0.96, 1, 10)
+lambda_grid = [0.96] # optimal value found in training
 
 if __name__ == "__main__":
     print("test starts here")
@@ -32,6 +32,6 @@ if __name__ == "__main__":
         yy, fy, hf, dfy, uf, h_val, log_score_lst = online_KDE(np.array(df['flex_load_kWh']), lambda_value,
                                                                df.index.strftime("%H"))
         a=3
-        log_score_values = [np.mean(i) for i in log_score_lst ]
+        log_score_values.append([np.mean(i) for i in log_score_lst ])
         lambda_values.append(lambda_value)
     print("test STOP")
