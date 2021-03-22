@@ -4,7 +4,7 @@
 # Author : Íngrid Munné-Collado
 # Date: 22/03/2021
 
-from L1_M1_climat_funct_main import *
+from L1_M1_climat_funct import *
 import pickle
 
 # Define paths

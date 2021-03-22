@@ -4,18 +4,23 @@
 # Date: 16/03/2021
 
 import pandas as pd
-import matplotlib
-# matplotlib.use('TkAgg')
 from matplotlib import pyplot as plt
-import seaborn as sns
 import datetime as dt
-import functions_climat_monthly as clim
 import calendar
+import pickle
+
+def load_dataset(file_path, granularity = '1T'):
+    # loading aggregated data
+    with open(file_path, 'rb') as f:
+        agg_df = pickle.load(f)
+        f.close()
+    print(f"loading dataset {file_path}")
+    return agg_df.resample(granularity).sum()
 
 def encode_threshold(df, column, threshold):
     df_copy = df.copy(deep=True)
     series = df_copy[column]
-    series_encoded = series
+    series_encoded = series.copy(deep=True)
     series_encoded[series_encoded > threshold] = 1
     series_encoded[series_encoded <= threshold] = 0
     return series_encoded
@@ -165,5 +170,3 @@ def season_prob_plot(series, path):
     plt.savefig(path + 'probability_season_p.png', dpi=200)
     plt.show()
 
-
-    # TODO: Create a main to check that this code works and obtain the results
