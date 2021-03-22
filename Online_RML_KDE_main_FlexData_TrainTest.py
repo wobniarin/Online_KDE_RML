@@ -6,7 +6,10 @@ from Online_RML_KDE_functions import *
 import numpy as np
 import matplotlib.pyplot as plt
 import pickle
+import time
 
+# starting time
+start = time.time()
 # Define paths
 file_path = './data/level_2_input_data.pkl'
 fig_path = './figures/'
@@ -33,4 +36,8 @@ if __name__ == "__main__":
         yy, fy, hf, dfy, uf, h_val, log_score_lst = online_KDE(np.array(df_test['flex_load_kWh']), lambda_value)
         log_score_values.append(np.mean(log_score_lst))
         lambda_values.append(lambda_value)
+    # end time
+    end = time.time()
+    # total time taken
+    print(f"Runtime of the program is {end - start}")
     print("test STOP")

@@ -6,7 +6,10 @@ from Online_RML_KDE_M2_functions import *
 import numpy as np
 import matplotlib.pyplot as plt
 import pickle
+import time
 
+# starting time
+start = time.time()
 # Define paths
 file_path = '../data/level_2_input_data.pkl'
 fig_path = '../figures/'
@@ -34,4 +37,10 @@ if __name__ == "__main__":
         a=3
         log_score_values.append([np.mean(i) for i in log_score_lst ])
         lambda_values.append(lambda_value)
+    # sleeping for 1 sec to get 10 sec runtime
+    time.sleep(1)
+    # end time
+    end = time.time()
+    # total time taken
+    print(f"Runtime of the program is {end - start}")
     print("test STOP")
