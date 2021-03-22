@@ -18,12 +18,13 @@ with open(file_path, 'rb') as f:
 df = series.to_frame()  # Convert series into df
 df_train = smaller_df(df, 8) # training split
 df_test = df[len(df_train):] # test split
+# df = df_train
 # define lists to store the values of lambda and log-score
 lambda_values = []
 log_score_values = []
 # grid search for lambda
 
-# lambda_grid = np.linspace(0.9965, 1, 800)
+# lambda_grid = np.linspace(0.96, 1, 800)
 lambda_grid = [0.9973147684605758] # optimal value found in training
 
 if __name__ == "__main__":
