@@ -8,6 +8,7 @@ from matplotlib import pyplot as plt
 import datetime as dt
 import calendar
 import pickle
+import numpy as np
 
 def load_dataset(file_path, granularity = '1T'):
     # loading aggregated data
@@ -94,7 +95,7 @@ def histogram_plot_flex_initial(df,path):
 
 def probability_monthly_hierarchical(series_encoded, folder_path):
     print("Calculating monthly probabilities")
-    forecast_df = pd.DataFrame(columns=['flexibility_0-1'])
+    forecast_df = pd.DataFrame()
     # iterate over test set to see the timeperiods to forecast
     for month in range(1, 13):
         print(f"Analyzing month number {month}")
@@ -111,6 +112,7 @@ def probability_monthly_hierarchical(series_encoded, folder_path):
             forecast_df.at[forecast_df.index[-1], 'time'] = timeperiod
     # set time as index, same structure as previous df
     forecast_df.set_index('time', inplace=True)
+    forecast_df.rename(columns={"flex_load_kWh": "flexibility_0-1"}, inplace=True)
     # defining path to store results
     path = folder_path + 'probability_results_' + str(dt.datetime.now().strftime("%Y%m%d_%H%M"))
     # path = '../test_functions/test'
@@ -124,6 +126,10 @@ def probability_monthly_hierarchical(series_encoded, folder_path):
     # return forecast df
     print("forecast results pkl file saved")
     return forecast_df
+
+def monthly_average_prob_df(forecast_df):
+    #function required to plot the results for each month and season
+    return forecast_df[forecast_df.index.day == 1]
 
 
 def monthly_prob_plot(series, path):
@@ -144,7 +150,7 @@ def monthly_prob_plot(series, path):
                                '10', '11', '12', '13', '14', '15', '16', '17', '18', '19',
                                '20', '21', '22', '23'))
     plt.legend(ncol=3)
-    plt.savefig(path + 'probability_month_p.png', dpi=200)
+    # plt.savefig(path + 'probability_month_p.png', dpi=200)
     plt.show()
 
 def season_prob_plot(series, path):
@@ -167,6 +173,6 @@ def season_prob_plot(series, path):
                                '10', '11', '12', '13', '14', '15', '16', '17', '18', '19',
                                '20', '21', '22', '23'))
     plt.legend(['winter', 'spring', 'summer', 'fall'],ncol=1)
-    plt.savefig(path + 'probability_season_p.png', dpi=200)
+    # plt.savefig(path + 'probability_season_p.png', dpi=200)
     plt.show()
 
