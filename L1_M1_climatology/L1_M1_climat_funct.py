@@ -176,3 +176,9 @@ def season_prob_plot(series, path):
     # plt.savefig(path + 'probability_season_p.png', dpi=200)
     plt.show()
 
+def brier_score(prob_series, binary_output_series):
+    BS_lst =[]
+    for i in range(len(prob_series)):
+        BS_lst.append((prob_series['flexibility_0-1'][i] - binary_output_series['flex_load_kWh'][i])**2)
+    return np.mean(BS_lst)
+
