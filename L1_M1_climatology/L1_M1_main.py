@@ -4,7 +4,7 @@
 # Date: 22/03/2021
 
 from L1_M1_climat_funct import *
-
+import time
 
 # Define paths
 file_path = '../data/L1_M1_encoded_data.pkl'
@@ -20,11 +20,17 @@ with open(file_path, 'rb') as f:
 # df = smaller_df(df,1)
 
 if __name__ == "__main__":
+    # starting time
+    start = time.time()
     print("test starts here")
     prob_df = probability_monthly_hierarchical(df, folder_path) # compute the probability for each month according to
                                                                 # climatology model
     monthly_df = monthly_average_prob_df(prob_df) # obtain a smaller df with the avg for each month
     monthly_prob_plot(monthly_df, fig_path)    # plot results by month
     season_prob_plot(monthly_df, fig_path)     # plot results by season
+    # end time
+    end = time.time()
+    # total time taken
+    print(f"Runtime of the program is {end - start}")
     print("test STOP")
 
