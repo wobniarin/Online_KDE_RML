@@ -28,6 +28,8 @@ if __name__ == "__main__":
     monthly_df = monthly_average_prob_df(prob_df) # obtain a smaller df with the avg for each month
     monthly_prob_plot(monthly_df, fig_path)    # plot results by month
     season_prob_plot(monthly_df, fig_path)     # plot results by season
+    # compute BRIER SCORE
+    BS = brier_score(prob_df, df)
     # end time
     end = time.time()
     # total time taken
