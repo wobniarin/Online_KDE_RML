@@ -6,6 +6,8 @@
 # Libraries
 import numpy as np
 import matplotlib.pyplot as plt
+from numpy import trapz
+
 
 
 def plot_style_LaTex():
@@ -38,6 +40,7 @@ def online_KDE(yv, ll):
     hy_hat = []
     tol = 0.05 # tolerance to safe-check that the gradient does not go to 0
     log_score_lst = []
+    exp_val_lst = []
     # iterative calculation
     for i in range(len(yv)):
         # first update parameters
@@ -67,8 +70,9 @@ def online_KDE(yv, ll):
         dfy = ll * dfy + (1-ll)*((((yy-yv[i])**2)/(hy**2)) -1)*1/hy*gaussiankernel(yy, yv[i], hy) # update derivative
         uf = dfy/fy # update information vector
         hf = ll * hf + (1-ll) * uf**2 # update hessian function
+        exp_val_lst.append(expected_value_fy(fy, yy, dx = 0.01))
         a = 3
-    return yy, fy, hf, dfy, uf, hv, log_score_lst
+    return yy, fy, hf, dfy, uf, hv, log_score_lst, exp_val_lst
 
 # log-likelihood score calculation at time t yi.
 def log_score_yi(yv, yy, fy, i):
@@ -77,3 +81,23 @@ def log_score_yi(yv, yy, fy, i):
 
 def smaller_df(df, until_month):
     return df[df.index.month <= until_month]
+
+def area(fy):
+    area = trapz(fy, dx=0.01)
+    print("area =", area)
+
+def expected_value_fy(fy, yy, dx):
+    area_lst = []
+    value_lst = []
+    exp_value_lst = []
+    for i in range(len(fy)):
+        small_fy = fy[i:i+2]
+        small_yy = yy[i:i+2]
+        area = trapz(small_fy, dx=0.01)
+        area_lst.append(area)
+        value = np.mean(small_yy)
+        value_lst.append(value)
+        exp_value_lst.append(area*value)
+    a=3
+    return np.sum(exp_value_lst)
+
